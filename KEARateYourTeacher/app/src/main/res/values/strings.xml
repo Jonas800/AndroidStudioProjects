@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">KEARateYourTeacher</string>
+    <string name="welcome">Choose a course to rate</string>
+    <string name="course1">Android App</string>
+    <string name="course2">Android Game</string>
+    <string name="course3">AI</string>
+    <string name="course4">Angular</string>
+    <string name="ratingHeader">Rate course</string>
+    <string name="resultHeader">Result of rating</string>
+    <string name="submit">Submit</string>
+    <string name="question1">Subject relevance</string>
+    <string name="question2">Teacher overall performance</string>
+    <string name="question3">Teacher preparation</string>
+    <string name="question4">Amount of feedback</string>
+    <string name="question5">How good their examples are</string>
+    <string name="question6">Job opportunities</string>
+    <string name="finalRating">Final Rating</string>
+    <string name="courseName">Course name</string>
+    <string name="mailWarning">Submitting will open your mail client</string>
+    <string name="resultCourseName">Course name: %1$s</string>
+    <string name="resultFinalRating">Final rating: %1$s</string>
+
+
+</resources>
