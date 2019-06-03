@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LoginApp</string>
+    <string name="welcome">Welcome all</string>
+
 </resources>

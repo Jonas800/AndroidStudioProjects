@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "222274500149",
+    "firebase_url": "https://keabank-90601.firebaseio.com",
+    "project_id": "keabank-90601",
+    "storage_bucket": "keabank-90601.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222274500149:android:be848ebfbf4b6328",
+        "android_client_info": {
+          "package_name": "com.example.keabank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222274500149-pmdn7lg892hhabo9379915r3rog5gdb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3razlp4vUc_lXgEfueA7dOvMBE-lgz_o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222274500149-pmdn7lg892hhabo9379915r3rog5gdb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 package com.example.loginapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString(EMAIL, emailStr);
                 editor.putString(PASSWORD, pwStr);
                 editor.commit();
+
+                Intent intent = new Intent(getApplicationContext(), Welcome.class);
+                startActivity(intent);
             }
         });
     }

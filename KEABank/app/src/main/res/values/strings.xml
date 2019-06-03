@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">KEABank</string>
+    <string name="main_welcome">Velkommen til KEA Bank</string>
+    <string name="main_login_or_register">Login eller registrer dig</string>
+    <string name="login">Login</string>
+    <string name="register">Ny bruger</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="new_user_header">Opret ny kunde</string>
+    <string name="new_user_name">Navn</string>
+    <string name="label_email">Email</string>
+    <string name="button_submit">Send</string>
+    <string name="label_password">Kodeord</string>
+    <string name="label_name">Navn</string>
+    <string name="title_activity_default_account">Basis konto</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">KEA Bank</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_default_account">Basiskonto</string>
+    <string name="menu_budget_account">Budgetkonto</string>
+    <string name="menu_business_account">Erhvervskonto</string>
+    <string name="menu_pension_account">Pensionkonto</string>
+    <string name="menu_savings_account">Opsparringskonto</string>
+    <string name="menu_bills">Betal regninger</string>
+    <string name="menu_user_settings">Min bruger</string>
+    <string name="title_activity_navigation">Oversigt</string>
+    <string name="title_activity_account_overview">Oversigt</string>
+    <string name="new_user_error">Kunne ikke oprette ny client</string>
+    <string name="login_error">Email og kodeord passer ikke sammen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="header_account">Konto</string>
+    <string name="header_balance">Balance</string>
+    <string name="button_deposit">Sæt ind</string>
+    <string name="button_withdraw">Træk ud</string>
+</resources>
