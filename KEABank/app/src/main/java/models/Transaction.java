@@ -10,52 +10,20 @@ public class Transaction implements Parcelable {
 
     private Double amount;
     private LocalDateTime timestamp;
-    private Client client;
+    private String clientName;
     private Double balanceAtTransactionTime;
 
     public Transaction() {
     }
 
-    public Transaction(Double amount, LocalDateTime timestamp, Client client, Double balanceAtTransactionTime) {
+    public Transaction(Double amount, LocalDateTime timestamp, String clientName, Double balanceAtTransactionTime) {
         this.amount = amount;
         this.timestamp = timestamp;
-        this.client = client;
+        this.clientName = clientName;
         this.balanceAtTransactionTime = balanceAtTransactionTime;
     }
 
-    protected Transaction(Parcel parcel) {
-        this.amount = parcel.readDouble();
-        this.timestamp = (LocalDateTime) parcel.readValue(LocalDateTime.class.getClassLoader());
-        this.client = (Client) parcel.readValue(Client.class.getClassLoader());
-        this.balanceAtTransactionTime = parcel.readDouble();
-    }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(this.amount);
-        dest.writeValue(this.timestamp);
-        dest.writeValue(this.client);
-        dest.writeDouble(this.balanceAtTransactionTime);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Transaction createFromParcel(Parcel in) {
-            return new Transaction();
-        }
-
-        public Transaction[] newArray(int size) {
-            return new Transaction[size];
-        }
-    };
-
-    public static Creator<Transaction> getCREATOR(){
-        return CREATOR;
-    }
 
     public Double getAmount() {
         return amount;
@@ -73,12 +41,12 @@ public class Transaction implements Parcelable {
         this.timestamp = timestamp;
     }
 
-    public Client getClient() {
-        return client;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public Double getBalanceAtTransactionTime() {
@@ -88,4 +56,47 @@ public class Transaction implements Parcelable {
     public void setBalanceAtTransactionTime(Double balanceAtTransactionTime) {
         this.balanceAtTransactionTime = balanceAtTransactionTime;
     }
+
+    public String toString(){
+        String s = "";
+
+        s += this.amount + ", ";
+        s += this.clientName + ", ";
+        s += this.balanceAtTransactionTime + ", ";
+        s += this.timestamp.toString();
+
+        return s;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.amount);
+        dest.writeSerializable(this.timestamp);
+        dest.writeString(this.clientName);
+        dest.writeValue(this.balanceAtTransactionTime);
+    }
+
+    protected Transaction(Parcel in) {
+        this.amount = (Double) in.readValue(Double.class.getClassLoader());
+        this.timestamp = (LocalDateTime) in.readSerializable();
+        this.clientName = in.readString();
+        this.balanceAtTransactionTime = (Double) in.readValue(Double.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Transaction> CREATOR = new Parcelable.Creator<Transaction>() {
+        @Override
+        public Transaction createFromParcel(Parcel source) {
+            return new Transaction(source);
+        }
+
+        @Override
+        public Transaction[] newArray(int size) {
+            return new Transaction[size];
+        }
+    };
 }

@@ -70,7 +70,7 @@ public class RatingActivity extends AppCompatActivity {
         a3.setFilters(new InputFilter[]{new MinMaxInputFilter(1, 100)});
         a4.setFilters(new InputFilter[]{new MinMaxInputFilter(1, 100)});
         a5.setFilters(new InputFilter[]{new MinMaxInputFilter(1, 100)});
-        a6.setFilters(new InputFilter[]{new MinMaxInputFilter(1, 100)});
+            a6.setFilters(new InputFilter[]{new MinMaxInputFilter(1, 100)});
 
     }
 }

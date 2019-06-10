@@ -3,6 +3,8 @@ package com.example.keabank;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,17 +20,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.util.List;
+
+import models.Client;
+
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
-    String TAG = "MYLOG";
+    String TAG = "mybp";
     EditText email, password;
     Button button;
     SharedPreferences sharedPreferences;
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String PASSWORD = "passwordKey";
     public static final String EMAIL = "emailKey";
-
+    private final String CLIENT_KEY = "CLIENT_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +63,18 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "Login/ onComplete: Success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            startActivity(new Intent(getApplicationContext(), NavigationActivity.class));
+
+                            Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
+                            Client client = Client.getDummyData();
+                            intent.putExtra(CLIENT_KEY, client);
+                            Geocoder geocoder = new Geocoder(getApplicationContext());
+                            try{
+                                List<Address> addresses = geocoder.getFromLocationName(client.getAddress() + " " + client.getCity(), 1);
+                                Log.d(TAG, "createClient: " + addresses.get(0).toString());
+                            } catch (IOException ex){
+                                //set default affiliate
+                            }
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, "Login/ onComplete: Failed");

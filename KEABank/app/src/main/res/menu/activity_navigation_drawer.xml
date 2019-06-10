@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_accounts"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/menuAccountOverview"
             android:title="@string/title_activity_account_overview" />
@@ -12,5 +14,24 @@
         <item
             android:id="@+id/menuBudgetAccount"
             android:title="@string/menu_budget_account" />
+        <item
+            android:id="@+id/menuPensionAccount"
+            android:title="@string/menu_pension_account" />
+        <item
+            android:id="@+id/menuSavingsAccount"
+            android:title="@string/menu_savings_account" />
+        <item
+            android:id="@+id/menuBusinessAccount"
+            android:title="@string/menu_business_account" />
+    </group>
+    <group
+        android:id="@+id/group_other"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menuTransferMoney"
+            android:title="@string/menu_transfer_money" />
+        <item
+            android:id="@+id/menuPayBills"
+            android:title="@string/menu_bills" />
     </group>
 </menu>

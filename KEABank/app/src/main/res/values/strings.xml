@@ -29,11 +29,33 @@
     <string name="title_activity_account_overview">Oversigt</string>
     <string name="new_user_error">Kunne ikke oprette ny client</string>
     <string name="login_error">Email og kodeord passer ikke sammen</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="confirm">Bekræft</string>
+    <string name="cancel">Annuller</string>
+    <string name="spinner_default_value">Vælg konto</string>
+    <string name="transfer_spinner_error">Vælg en konto for at overføre</string>
+    <string name="transfer_text_error">Udfyld tekstfeltet for at overføre</string>
+    <string name="transfer_text_error_multiple">Udfyld tekstfelterne for at overføre</string>
+    <string name="transfer_same_account_error">Kan ikke overføre til samme konto</string>
+    <string name="transfer_pension_age_error">Kan kun trække penge fra pensionskonto efter alder 77</string>
+    <string name="transfer_non_existing_account_error">Modtagende konto eksisterer ikke</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="header_account">Konto</string>
     <string name="header_balance">Balance</string>
     <string name="button_deposit">Sæt ind</string>
     <string name="button_withdraw">Træk ud</string>
+    <string name="label_address">Adresse</string>
+    <string name="label_city">By</string>
+    <string name="label_birthday">Fødselsdato</string>
+    <string name="button_transfer">Overfør</string>
+    <string name="overdraft_confirm_dialog_message">Dette vil lave overtræk på denne konto\nTryk Bekræft for at acceptere</string>
+    <string name="create_account_fragment_message">Ønsker du at oprette en %1$s</string>
+    <string name="date_format">%1d:%2d:%3d : %4d$:%5d$</string>
+    <string name="label_transfer">Overfør penge fra denne konto til en anden konto</string>
+    <string name="menu_transfer_money">Overfør penge</string>
+    <string name="from">Fra</string>
+    <string name="amount">Antal</string>
+    <string name="account">Konto</string>
+    <string name="to">Til</string>
+    <string name="account_number">Kontonummer</string>
+    <string name="affiliate">%1$s: %2$s, %3$s</string>
 </resources>

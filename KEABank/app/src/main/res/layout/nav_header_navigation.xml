@@ -21,6 +21,12 @@
         app:srcCompat="@drawable/kealogo" />
 
     <TextView
+        android:id="@+id/affiliate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10sp" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
