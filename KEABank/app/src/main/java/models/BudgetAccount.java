@@ -12,6 +12,7 @@ public class BudgetAccount extends Account implements Transactable{
 
 
     public BudgetAccount() {
+        setAccountType(R.string.menu_budget_account);
     }
 
     public BudgetAccount(String accountNumber, Double balance, List<Transaction> transactions) {

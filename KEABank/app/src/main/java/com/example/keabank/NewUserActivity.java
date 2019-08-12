@@ -24,6 +24,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
+import helpers.RandomAccountNumber;
 import models.Account;
 import models.Affiliate;
 import models.BudgetAccount;
@@ -92,12 +93,15 @@ public class NewUserActivity extends AppCompatActivity {
         ArrayList<Account> accounts = new ArrayList<>();
         DefaultAccount defaultAccount = new DefaultAccount();
         defaultAccount.setBalance(new Double(1000));
+        defaultAccount.setAccountNumber(RandomAccountNumber.getRandomAccountNumber());
         BudgetAccount budgetAccount = new BudgetAccount();
         budgetAccount.setBalance(new Double(1000));
+        budgetAccount.setAccountNumber(RandomAccountNumber.getRandomAccountNumber());
         accounts.add(defaultAccount);
         accounts.add(budgetAccount);
 
         client.setAccounts(accounts);
+        client.setName(name.getText().toString());
         client.setCity(city.getText().toString());
         client.setAddress(address.getText().toString());
         client.setEmail(email.getText().toString());

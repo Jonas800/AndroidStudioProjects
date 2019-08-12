@@ -118,6 +118,13 @@ public class NavigationActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.FragmentHolder, transferMoneyFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+        } else if(id == R.id.menuRecurringPayments){
+            RecurringTransfersFragment recurringTransfersFragment = new RecurringTransfersFragment();
+            getSupportActionBar().setTitle(R.string.recurring_transfers);
+            recurringTransfersFragment.setArguments(bundleToFragment);
+            fragmentTransaction.replace(R.id.FragmentHolder, recurringTransfersFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
 
 

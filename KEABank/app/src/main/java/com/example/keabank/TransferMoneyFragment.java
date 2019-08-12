@@ -2,6 +2,7 @@ package com.example.keabank;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -16,7 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Random;
 
 import models.Account;
 import models.Client;
@@ -30,11 +34,13 @@ public class TransferMoneyFragment extends Fragment {
     EditText amount, accountNumberTo;
     Button transfer;
     Spinner spinner;
-    Account account;
+    Account account, otherAcc, accountToTransferFrom;
     Client client;
     Context context;
     Resources resources;
     View rootView;
+    Double amountDouble;
+    String selectedAccount, otherAccountNumber;
 
 
     public TransferMoneyFragment() {
@@ -48,16 +54,44 @@ public class TransferMoneyFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_transfer_money, container, false);
         init();
+
+
         transfer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (spinner.getSelectedItemId() != 0) {
                     if (!TextUtils.isEmpty(amount.getText()) || !TextUtils.isEmpty(accountNumberTo.getText())) {
-                        Double amountDouble = Double.valueOf(amount.getText().toString());
-                        String otherAccountNumber = accountNumberTo.getText().toString();
+                        amountDouble = Double.valueOf(amount.getText().toString());
+                        otherAccountNumber = accountNumberTo.getText().toString();
+                        selectedAccount = spinner.getSelectedItem().toString();
 
                         try {
-                            doTransaction(amountDouble, otherAccountNumber);
+                            for (Account account : client.getAccounts()) {
+                                if (resources.getString(account.getAccountType()).equals(selectedAccount)) {
+                                    try {
+                                        //in real example would get other client and accounts from storage
+                                        Client otherClient = Client.getOtherClientDummyData();
+                                        boolean isCorrectOtherAccountNumber = false;
+                                        for (Account otherAccount : otherClient.getAccounts()) {
+                                            if (otherAccount.getAccountNumber().equals(otherAccountNumber)) {
+                                                isCorrectOtherAccountNumber = true;
+                                                otherAcc = otherAccount;
+                                            }
+                                        }
+                                        //Do the transaction if the receiving account was found
+                                        if (isCorrectOtherAccountNumber) {
+                                            accountToTransferFrom = account;
+                                            makeNemIdDialog();
+                                            Log.d("mybp", "doTransaction: " + otherClient.toString());
+                                            break;
+                                        } else {
+                                            makeErrorToast(R.string.transfer_non_existing_account_error);
+                                        }
+                                    } catch (IllegalArgumentException ex) {
+                                        makeErrorToast(R.string.transfer_pension_age_error);
+                                    }
+                                }
+                            }
                         } catch (IllegalArgumentException ex) {
                             makeErrorToast(R.string.transfer_pension_age_error);
                         }
@@ -73,34 +107,56 @@ public class TransferMoneyFragment extends Fragment {
         return rootView;
     }
 
-    private void doTransaction(Double amountDouble, String otherAccountNumber) {
-        String selectedAccount = spinner.getSelectedItem().toString();
-        for (Account accountToTransferFrom : client.getAccounts()) {
-            if (resources.getString(accountToTransferFrom.getAccountType()).equals(selectedAccount)) {
-                try {
-                    Client otherClient = Client.getOtherClientDummyData();
-                    boolean isCorrectOtherAccountNumber = false;
-                    Account otherAcc = null;
-                    for (Account otherAccount : otherClient.getAccounts()) {
-                        if (otherAccount.getAccountNumber().equals(otherAccountNumber)) {
-                            isCorrectOtherAccountNumber = true;
-                            otherAcc = otherAccount;
+    private void doTransaction() {
+        accountToTransferFrom.withdraw(amountDouble, client);
+        otherAcc.deposit(amountDouble, client);
+    }
+
+    private void makeNemIdDialog() {
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_nem_id);
+        dialog.setTitle(getResources().getString(R.string.nemid));
+
+        final EditText userID = dialog.findViewById(R.id.nemid_userid);
+        final EditText password = dialog.findViewById(R.id.nemid_password);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.nemid_button);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userID.getText().toString().equals("0101901212") && password.getText().toString().equals("123456")) {
+                    final Dialog keyDialog = new Dialog(context);
+                    keyDialog.setContentView(R.layout.dialog_nem_id_key);
+                    dialog.setTitle(resources.getString(R.string.nemid));
+
+                    final EditText key = keyDialog.findViewById(R.id.nemid_key);
+                    TextView textKey = keyDialog.findViewById(R.id.nemid_text_key);
+                    textKey.setText("" + new Random().nextInt(9999));
+                    Button keyDialogButton = keyDialog.findViewById(R.id.nemid_button);
+
+                    keyDialogButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (key.getText().toString().equals("010101")) {
+                                doTransaction();
+                                keyDialog.dismiss();
+                            } else {
+                                makeErrorToast(R.string.nemid_key_error);
+                            }
                         }
-                    }
-                    //Do the transaction if the receiving account was found
-                    if (isCorrectOtherAccountNumber) {
-                        accountToTransferFrom.withdraw(amountDouble, client);
-                        otherAcc.deposit(amountDouble, client);
-                        Log.d("mybp", "doTransaction: " + otherClient.toString());
-                        break;
-                    } else {
-                        makeErrorToast(R.string.transfer_non_existing_account_error);
-                    }
-                } catch (IllegalArgumentException ex) {
-                    makeErrorToast(R.string.transfer_pension_age_error);
+                    });
+                    dialog.dismiss();
+                    keyDialog.show();
+                } else {
+                    //make cancel button too
+                    makeErrorToast(R.string.nemid_error);
                 }
             }
-        }
+        });
+
+        dialog.show();
     }
 
     private void makeOverdraftConfirmDialog(final Double amountDouble, final String otherAccountNumber) {
@@ -109,7 +165,7 @@ public class TransferMoneyFragment extends Fragment {
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                doTransaction(amountDouble, otherAccountNumber);
+                doTransaction();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

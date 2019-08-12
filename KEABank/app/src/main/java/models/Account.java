@@ -75,14 +75,15 @@ public class Account implements Transactable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.accountNumber);
         dest.writeValue(this.balance);
-        dest.writeTypedList(this.transactions);
+        dest.writeList(this.transactions);
         dest.writeInt(this.accountType);
     }
 
     protected Account(Parcel in) {
         this.accountNumber = in.readString();
         this.balance = (Double) in.readValue(Double.class.getClassLoader());
-        this.transactions = in.createTypedArrayList(Transaction.CREATOR);
+        this.transactions = new ArrayList<>();
+        in.readList(this.transactions, Transaction.class.getClassLoader());
         this.accountType = in.readInt();
     }
 

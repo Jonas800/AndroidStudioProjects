@@ -56,11 +56,16 @@ public class OverviewFragment extends Fragment {
 
             TextView labelAccountType = new TextView(context);
             labelAccountType.setText(account.getAccountType());
+
+            TextView labelAccountNumber = new TextView(context);
+            labelAccountNumber.setText(account.getAccountNumber());
+
             TextView labelBalance = new TextView(context);
             labelBalance.setText(String.format("%.2f", account.getBalance()));
             labelBalance.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
 
             tableRow.addView(labelAccountType);
+            tableRow.addView(labelAccountNumber);
             tableRow.addView(labelBalance);
             tableLayout.addView(tableRow);
         }

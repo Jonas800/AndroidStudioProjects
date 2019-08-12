@@ -21,8 +21,10 @@ public class Client implements Parcelable {
     private LocalDate dateOfBirth;
     private List<Account> accounts;
     private Affiliate affiliate;
+    private List<RecurringTransfer> recurringTransfers = new ArrayList<>();
 
     public Client() {
+        this.recurringTransfers = new ArrayList<>();
     }
 
     public Client(String name, String email, String address, String city, LocalDate dateOfBirth, List<Account> accounts, Affiliate affiliate) {
@@ -33,6 +35,18 @@ public class Client implements Parcelable {
         this.dateOfBirth = dateOfBirth;
         this.accounts = accounts;
         this.affiliate = affiliate;
+        this.recurringTransfers = new ArrayList<>();
+    }
+
+    public Client(String name, String email, String address, String city, LocalDate dateOfBirth, List<Account> accounts, Affiliate affiliate, List<RecurringTransfer> recurringTransfers) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.city = city;
+        this.dateOfBirth = dateOfBirth;
+        this.accounts = accounts;
+        this.affiliate = affiliate;
+        this.recurringTransfers = recurringTransfers;
     }
 
     public Affiliate getAffiliate() {
@@ -95,6 +109,14 @@ public class Client implements Parcelable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public List<RecurringTransfer> getRecurringTransfers() {
+        return recurringTransfers;
+    }
+
+    public void setRecurringTransfers(List<RecurringTransfer> recurringTransfers) {
+        this.recurringTransfers = recurringTransfers;
+    }
+
     public static Client getDummyData() {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -120,12 +142,15 @@ public class Client implements Parcelable {
 
         client.setAccounts(accounts);
 
+        List<RecurringTransfer> recurringTransfers = new ArrayList<>();
+        client.setRecurringTransfers(recurringTransfers);
+
         return client;
 
     }
 
     public static Client getOtherClientDummyData() {
-        Client client = new Client("Bent Bentsen", "bent@test.dk", "Albani Torv 2", "Odense C", LocalDate.of(1920, 5, 12), new ArrayList<Account>(), Affiliate.getOdenseAffiliate());
+        Client client = new Client("Bent Bentsen", "bent@test.dk", "Albani Torv 2", "Odense C", LocalDate.of(1920, 5, 12), new ArrayList<Account>(), Affiliate.getOdenseAffiliate(), new ArrayList<RecurringTransfer>());
 
         List<Account> accounts = new ArrayList<>();
         Double amount1 = 345.67;
@@ -178,6 +203,7 @@ public class Client implements Parcelable {
         dest.writeSerializable(this.dateOfBirth);
         dest.writeList(this.accounts);
         dest.writeParcelable(this.affiliate, flags);
+        dest.writeList(this.recurringTransfers);
     }
 
     protected Client(Parcel in) {
@@ -189,7 +215,7 @@ public class Client implements Parcelable {
         this.accounts = new ArrayList<>();
         in.readList(this.accounts, Account.class.getClassLoader());
         this.affiliate = in.readParcelable(Affiliate.class.getClassLoader());
-
+        in.readList(this.recurringTransfers, RecurringTransfer.class.getClassLoader());
     }
 
 

@@ -2,6 +2,7 @@ package com.example.keabank;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 import helpers.MinMaxInputFilter;
 import models.Account;
@@ -56,8 +59,8 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
-
         init();
+
 
 
         transfer.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +73,7 @@ public class AccountFragment extends Fragment {
                         if (amountDouble <= account.getBalance()) {
                             try {
                                 doTransaction(amountDouble);
-                            } catch(IllegalArgumentException ex){
+                            } catch (IllegalArgumentException ex) {
                                 makeErrorToast(R.string.transfer_pension_age_error);
                             }
                         } else {
@@ -91,22 +94,80 @@ public class AccountFragment extends Fragment {
     private void doTransaction(Double amountDouble) {
         String selectedAccount = spinner.getSelectedItem().toString();
         for (Account accountToTransferTo : client.getAccounts()) {
+            //make sure accounts aren't the same account
             if (resources.getString(accountToTransferTo.getAccountType()).equals(selectedAccount)) {
                 if (accountToTransferTo != account) {
-                    try {
-                        account.withdraw(amountDouble, client);
-                        accountToTransferTo.deposit(amountDouble, client);
-                        //remake transaction table with new transaction
-                        createTransactionTable();
-                        break;
-                    } catch (IllegalArgumentException ex) {
-                        makeErrorToast(R.string.transfer_pension_age_error);
+                    //create a nemid dialog for pension accounts
+                    if (resources.getString(R.string.menu_pension_account).equals(selectedAccount)) {
+                        makeNemIdDialog(accountToTransferTo, amountDouble);
+                    } else {
+                        try {
+                            account.withdraw(amountDouble, client);
+                            accountToTransferTo.deposit(amountDouble, client);
+                            //remake transaction table with new transaction
+                            createTransactionTable();
+                            break;
+                        } catch (IllegalArgumentException ex) {
+                            makeErrorToast(R.string.transfer_pension_age_error);
+                        }
                     }
                 } else {
                     makeErrorToast(R.string.transfer_same_account_error);
                 }
             }
         }
+    }
+
+    private void makeNemIdDialog(final Account accountToTransferTo, final Double amountDouble) {
+        // custom dialog
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_nem_id);
+        dialog.setTitle(getResources().getString(R.string.nemid));
+
+        final EditText userID = dialog.findViewById(R.id.nemid_userid);
+        final EditText password = dialog.findViewById(R.id.nemid_password);
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.nemid_button);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userID.getText().toString().equals("0101901212") && password.getText().toString().equals("123456")) {
+                    final Dialog keyDialog = new Dialog(context);
+                    keyDialog.setContentView(R.layout.dialog_nem_id_key);
+                    dialog.setTitle(resources.getString(R.string.nemid));
+
+                    final EditText key = keyDialog.findViewById(R.id.nemid_key);
+                    TextView textKey = keyDialog.findViewById(R.id.nemid_text_key);
+                    textKey.setText("" + new Random().nextInt(9999));
+                    Button keyDialogButton = keyDialog.findViewById(R.id.nemid_button);
+
+                    keyDialogButton.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (key.getText().toString().equals("010101")) {
+                                account.withdraw(amountDouble, client);
+                                accountToTransferTo.deposit(amountDouble, client);
+                                //remake transaction table with new transaction
+                                createTransactionTable();
+                                keyDialog.dismiss();
+                            } else {
+                                makeErrorToast(R.string.nemid_key_error);
+                            }
+                        }
+                    });
+                    dialog.dismiss();
+                    keyDialog.show();
+                } else {
+                    //make cancel button too
+                    makeErrorToast(R.string.nemid_error);
+                }
+
+
+            }
+        });
+
+        dialog.show();
     }
 
     private void makeOverdraftConfirmDialog(final Double amountDouble) {

@@ -58,4 +58,20 @@
     <string name="to">Til</string>
     <string name="account_number">Kontonummer</string>
     <string name="affiliate">%1$s: %2$s, %3$s</string>
+    <string name="nemid">NEM ID</string>
+    <string name="user_id">Bruger-ID</string>
+    <string name="hashtag">#</string>
+    <string name="accept">Godkend</string>
+    <string name="nemid_error">Bruger-id og kodeord passer ikke sammen</string>
+    <string name="nemid_key_error">Nøgle passer ikke</string>
+    <string name="key">Nøgle</string>
+    <string name="header_account_number">Kontonummer</string>
+    <string name="recurring_transfers">Gentagne overførsler</string>
+    <string name="rec_interval">Interval</string>
+    <string name="rec_account_from">Fra konto</string>
+    <string name="rec_account_to">Modtager</string>
+    <string name="days">dage</string>
+    <string name="new_recurring_payment">Tilføj ny gentagne overførsler</string>
+
+
 </resources>
